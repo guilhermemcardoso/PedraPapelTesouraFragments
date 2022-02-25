@@ -76,10 +76,14 @@ class MainFragment : Fragment(), View.OnClickListener {
                 sb.append(" ganhou esta rodada! Selecione sua próxima jogada para a rodada seguinte.")
             }
             rodadaAtual++
+            fragmentMainBinding.resultadoTv.text = sb.toString()
+            fragmentMainBinding.resultadoLl.visibility = View.VISIBLE
         } else {
             val campeoes: ArrayList<String> = ArrayList()
+            var jogadorGanhou: Boolean = false
             if (vitoriasJogador >= vitoriasComputador1 && vitoriasJogador >= vitoriasComputador2) {
                 campeoes.add(JOGADOR)
+                jogadorGanhou = true
             }
             if (vitoriasComputador1 >= vitoriasJogador && vitoriasComputador1 >= vitoriasComputador2) {
                 campeoes.add(COMPUTADOR1)
@@ -87,22 +91,24 @@ class MainFragment : Fragment(), View.OnClickListener {
             if (vitoriasComputador2 >= vitoriasComputador1 && vitoriasComputador2 >= vitoriasJogador) {
                 campeoes.add(COMPUTADOR2)
             }
-            for (counter in 0 until campeoes.size) {
 
-                sb.append(campeoes[counter])
-                if (counter < resultado.size - 1) {
-                    sb.append(", ")
+            if (campeoes.size > 1) {
+                if(jogadorGanhou) {
+                    fragmentMainBinding.resultadoTv.text = "Jogador empatou"
+                } else {
+                    fragmentMainBinding.resultadoTv.text = "Jogador perdeu"
+                }
+            } else {
+                if(jogadorGanhou) {
+                    fragmentMainBinding.resultadoTv.text = "Jogador ganhou"
+                } else {
+                    fragmentMainBinding.resultadoTv.text = "Jogador perdeu"
                 }
             }
-            if (campeoes.size > 1) {
-                sb.append(" ganharam esta partida! Selecione sua próxima jogada para iniciar uma nova partida.")
-            } else {
-                sb.append(" ganhou esta partida! Selecione sua próxima jogada para iniciar uma nova partida.")
-            }
             reiniciarPartida()
+            fragmentMainBinding.resultadoLl.visibility = View.VISIBLE
         }
-        fragmentMainBinding.resultadoTv.text = sb.toString()
-        fragmentMainBinding.resultadoLl.visibility = View.VISIBLE
+
     }
 
     private fun reiniciarPartida() {
